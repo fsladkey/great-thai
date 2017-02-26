@@ -1,3 +1,4 @@
+import pdb
 import os
 import psycopg2
 import psycopg2.extras
@@ -49,28 +50,34 @@ col_names = [
     "grade_date",
     "inspection_type",
 ]
-cursor_factory = psycopg2.extras.RealDictCursor
+cursors = {
+    list: psycopg2.extras.DictCursor,
+    dict: psycopg2.extras.RealDictCursor
+}
 
 
 def connect(db):
     return psycopg2.connect("dbname={db} user=postgres".format(db=db))
 
 
-def execute(statement, vals={}):
+def execute(statement, vals={}, return_type=dict):
+    cursor = cursors[return_type]
     with connect(DB_NAME) as connection:
-        with connection.cursor(cursor_factory=cursor_factory) as cur:
+        with connection.cursor(cursor_factory=cursor) as cur:
             cur.execute(statement, vals)
 
 
-def fetch(statement, vals={}):
+def fetch(statement, vals={}, return_type=dict):
+    cursor = cursors[return_type]
     with connect(DB_NAME) as connection:
-        with connection.cursor(cursor_factory=cursor_factory) as cur:
+        with connection.cursor(cursor_factory=cursor) as cur:
             cur.execute(statement, vals)
             return cur.fetchone()
 
 
-def fetch_all(statement, vals={}):
+def fetch_all(statement, vals={}, return_type=dict):
+    cursor = cursors[return_type]
     with connect(DB_NAME) as connection:
-        with connection.cursor(cursor_factory=cursor_factory) as cur:
+        with connection.cursor(cursor_factory=cursor) as cur:
             cur.execute(statement, vals)
             return cur.fetchall()

@@ -1,6 +1,6 @@
 import os
-from query_helpers import all_restaurants
-from flask import Flask, render_template, jsonify, url_for
+from query_helpers import all_cuisines, top_ten_by_grade, grade_distribution
+from flask import Flask, render_template, jsonify, request
 app = Flask(__name__)
 
 
@@ -8,9 +8,19 @@ app = Flask(__name__)
 def root():
     return render_template('index.html')
 
-@app.route('/api/data')
-def data():
-    data = all_restaurants()
+
+@app.route('/api/cuisines')
+def cuisines():
+    data = all_cuisines()
+    return jsonify(data)
+
+@app.route('/api/cuisines/stats/')
+def cuisine_stats():
+    cuisine = request.args.get('cuisine')
+    data = {
+      "top_ten": top_ten_by_grade(cuisine),
+      "grade_distribution": grade_distribution(cuisine)
+    }
     return jsonify(data)
 
 if __name__ == '__main__':
