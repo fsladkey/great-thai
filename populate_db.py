@@ -1,8 +1,7 @@
-import urllib2
+from urllib.request import urlopen
 import csv
 import db_connection
 SOURCE_URL = "https://nycopendata.socrata.com/api/views/xx67-kt59/rows.csv?accessType=DOWNLOAD"
-# SOURCE_URL = "http://localhost:8000/data.csv"
 
 def transform_row(row):
     """Adjusts column names and value types for insertion into DB"""
@@ -42,7 +41,7 @@ def insert_row(restaurant, execute):
 
 
 def populate_db(url, execute):
-    csv_reader = csv.DictReader(urllib2.urlopen(url))
+    csv_reader = csv.DictReader(urlopen(url, "rt"))
     for row in csv_reader:
         insert_row(transform_row(row), execute)
 
