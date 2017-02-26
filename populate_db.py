@@ -1,4 +1,4 @@
-from urllib.request import urlopen
+from urllib2 import urlopen
 import csv
 import db_connection
 SOURCE_URL = "https://nycopendata.socrata.com/api/views/xx67-kt59/rows.csv?accessType=DOWNLOAD"
@@ -37,11 +37,11 @@ def insert_row(restaurant, execute):
             %(grade_date)s,
             %(record_date)s,
             %(inspection_type)s
-        );""".format(db_connection.col_names), restaurant)
+        );""".format(", ".join(db_connection.col_names)), restaurant)
 
 
 def populate_db(url, execute):
-    csv_reader = csv.DictReader(urlopen(url, "rt"))
+    csv_reader = csv.DictReader(urlopen(url))
     for row in csv_reader:
         insert_row(transform_row(row), execute)
 

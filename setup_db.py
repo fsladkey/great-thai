@@ -18,7 +18,7 @@ def setup_db():
             action varchar,
             violation_code varchar,
             violation_description varchar,
-            critical varchar,
+            critical_flag varchar,
             score varchar,
             grade varchar,
             grade_date date,

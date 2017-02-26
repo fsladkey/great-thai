@@ -2,7 +2,7 @@ import os
 import psycopg2
 import psycopg2.extras
 import datetime
-from urllib.parse import urlparse
+from urlparse import urlparse
 
 
 def to_date(string_formatted_date):
