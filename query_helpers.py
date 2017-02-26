@@ -24,5 +24,3 @@ def all_restaurants(limit=10):
     LIMIT
       10
     """)
-
-print(all_restaurants())
