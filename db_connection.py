@@ -2,7 +2,6 @@ import os
 import psycopg2
 import psycopg2.extras
 import datetime
-import pdb
 DB_NAME = os.environ.get("DATABASE_URL", "great_thai")
 
 
@@ -50,6 +49,7 @@ col_names = [
     "grade_date",
     "inspection_type",
 ]
+cursor_factory = psycopg2.extras.RealDictCursor
 
 
 def connect(db):
@@ -57,32 +57,20 @@ def connect(db):
 
 
 def execute(statement, vals={}):
-    # with psycopg2.connect(DSN) as conn:
-    # with conn.cursor() as curs:
-    #     curs.execute(SQL)
-    connection = connect(DB_NAME)
-    cur = connection.cursor()
-    cur.execute(statement, vals)
-    connection.commit()
-    cur.close()
-    connection.close()
+    with connect(DB_NAME) as connection:
+        with connection.cursor(cursor_factory=cursor_factory) as cur:
+            cur.execute(statement, vals)
 
 
 def fetch(statement, vals={}):
-    connection = connect(DB_NAME)
-    cur = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-    cur.execute(statement, vals)
-    result = cur.fetchone()
-    cur.close()
-    connection.close()
-    return result
+    with connect(DB_NAME) as connection:
+        with connection.cursor(cursor_factory=cursor_factory) as cur:
+            cur.execute(statement, vals)
+            return cur.fetchone()
 
 
 def fetch_all(statement, vals={}):
-    connection = connect(DB_NAME)
-    cur = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-    cur.execute(statement, vals)
-    result = cur.fetchall()
-    cur.close()
-    connection.close()
-    return result
+    with connect(DB_NAME) as connection:
+        with connection.cursor(cursor_factory=cursor_factory) as cur:
+            cur.execute(statement, vals)
+            return cur.fetchall()
