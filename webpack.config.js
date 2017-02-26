@@ -8,13 +8,6 @@ var plugins = [
   })
 ]
 
-if (process.env.NODE_ENV === 'production') {
-  plugins.push(new webpack.optimize.UglifyJsPlugin({
-      compress: { warnings: false }
-    })
-  )
-}
-
 module.exports = {
   context: __dirname,
   entry: [
@@ -30,15 +23,9 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: "babel-loader",
-        query: {
-          presets: ["react", "latest"]
-        }
+        loader: "babel-loader"
       }
     ]
   },
   devtool: 'source-map',
-  resolve: {
-    extensions: ['.js', '.jsx']
-  },
 };
