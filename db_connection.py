@@ -1,9 +1,8 @@
-import pdb
 import os
 import psycopg2
 import psycopg2.extras
 import datetime
-DB_NAME = os.environ.get("DATABASE_URL", "great_thai")
+from urlparse import urlparse
 
 
 def to_date(string_formatted_date):
@@ -56,20 +55,31 @@ cursors = {
 }
 
 
-def connect(db):
-    return psycopg2.connect("dbname={db} user=postgres".format(db=db))
+def connect():
+    url = os.environ.get('DATABASE_URL', None)
+    if url:
+        url = urlparse(url)
+        db = "dbname={} user={} password={} host={} ".format(
+            url.path[1:],
+            url.username,
+            url.password,
+            url.hostname
+        )
+    else:
+        db = "dbname=great_thai user=postgres"
+    return psycopg2.connect(db)
 
 
 def execute(statement, vals={}, return_type=dict):
     cursor = cursors[return_type]
-    with connect(DB_NAME) as connection:
+    with connect() as connection:
         with connection.cursor(cursor_factory=cursor) as cur:
             cur.execute(statement, vals)
 
 
 def fetch(statement, vals={}, return_type=dict):
     cursor = cursors[return_type]
-    with connect(DB_NAME) as connection:
+    with connect() as connection:
         with connection.cursor(cursor_factory=cursor) as cur:
             cur.execute(statement, vals)
             return cur.fetchone()
@@ -77,7 +87,7 @@ def fetch(statement, vals={}, return_type=dict):
 
 def fetch_all(statement, vals={}, return_type=dict):
     cursor = cursors[return_type]
-    with connect(DB_NAME) as connection:
+    with connect() as connection:
         with connection.cursor(cursor_factory=cursor) as cur:
             cur.execute(statement, vals)
             return cur.fetchall()

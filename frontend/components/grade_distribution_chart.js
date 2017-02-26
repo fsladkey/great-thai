@@ -14,7 +14,6 @@ export default class GradeDistibutionChart extends Component {
   getChartData() {
     const data = dataToMap(this.props.data)
     const labels = Object.keys(data).sort()
-    debugger
     return {
       labels: labels,
       datasets: [
