@@ -1,7 +1,9 @@
 from urllib2 import urlopen
 import csv
 import db_connection
+from query_helpers import drop_index, add_index
 SOURCE_URL = "https://nycopendata.socrata.com/api/views/xx67-kt59/rows.csv?accessType=DOWNLOAD"
+
 
 def transform_row(row):
     """Adjusts column names and value types for insertion into DB"""
@@ -14,9 +16,9 @@ def transform_row(row):
     return result
 
 
-def insert_row(restaurant, execute):
+def insert_statement():
     """Inserts a restaurtant dict object into the db"""
-    execute("""
+    return ("""
         INSERT INTO restaurants ({})
         VALUES (
             %(camis)s,
@@ -37,12 +39,23 @@ def insert_row(restaurant, execute):
             %(grade_date)s,
             %(record_date)s,
             %(inspection_type)s
-        );""".format(", ".join(db_connection.col_names)), restaurant)
+        );""".format(", ".join(db_connection.col_names)))
 
 
-def populate_db(url, execute):
-    csv_reader = csv.DictReader(urlopen(url))
-    for row in csv_reader:
-        insert_row(transform_row(row), execute)
+def populate_db(url):
+    """Reads csv file from a url and inserts each line into the db"""
+    drop_index()
+    count = 0
+    try:
+        with db_connection.connect() as connection:
+            with connection.cursor() as cur:
+                csv_reader = csv.DictReader(urlopen(url))
+                for row in csv_reader:
+                    print(count)
+                    restaurant = transform_row(row)
+                    cur.execute(insert_statement(), restaurant)
+                    count += 1
+    finally:
+        add_index()
 
-populate_db(SOURCE_URL, db_connection.execute)
+populate_db(SOURCE_URL)

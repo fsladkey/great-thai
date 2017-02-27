@@ -1,32 +1,20 @@
-from db_connection import fetch_all
+from db_connection import fetch_all, execute
 
 
-def restaurants_where(where={}, limit=10):
-    where_str = " AND ".join(["{} = %({})s".format(col, col) for col in where])
-    return fetch_all("""
-    SELECT
-      *
-    FROM
-      restaurants
-    WHERE
-      {}
-    LIMIT
-      10
-    """.format(where_str), where)
+def add_index():
+    return execute("""
+    CREATE INDEX cuisine_idx ON restaurants (cuisine_description);
+    """)
 
 
-def all_restaurants(limit=10):
-    return fetch_all("""
-    SELECT
-      *
-    FROM
-      restaurants
-    LIMIT
-      10
+def drop_index():
+    return execute("""
+    DROP INDEX cuisine_idx;
     """)
 
 
 def all_cuisines():
+    """Returns all values for cuisine_description as a list"""
     result = fetch_all("""
     SELECT DISTINCT
       cuisine_description
@@ -37,6 +25,7 @@ def all_cuisines():
 
 
 def top_ten_by_grade(cuisine):
+    """Returns the ten restaurants with the best score for a cuisine"""
     return fetch_all("""
     SELECT
       *
@@ -52,6 +41,7 @@ def top_ten_by_grade(cuisine):
 
 
 def grade_distribution(cuisine):
+    """Returns the frequenacy of each letter grade for a cuisine"""
     return fetch_all("""
     SELECT
       grade, COUNT(id) as num_restaurants

@@ -1,4 +1,5 @@
 from db_connection import execute
+from query_helpers import add_index
 
 
 def setup_db():
@@ -25,7 +26,7 @@ def setup_db():
             record_date date,
             inspection_type varchar
         );
-        CREATE INDEX ON restaurants (grade);
     """)
+    add_index()
 
 setup_db()
