@@ -1,5 +1,5 @@
 import os
-from query_helpers import all_cuisines, top_ten_by_grade, grade_distribution
+from db_interface.query_helpers import all_cuisines, top_ten_by_grade, grade_distribution
 from flask import Flask, render_template, jsonify, request
 app = Flask(__name__)
 
