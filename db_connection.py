@@ -10,7 +10,7 @@ def to_date(string_formatted_date):
     return datetime.datetime.strptime(string_formatted_date, "%m/%d/%Y")
 
 col_types = {
-    "camis": str,
+    "camis": int,
     "dba": str,
     "boro": str,
     "building": str,

@@ -1,7 +1,7 @@
 from urllib2 import urlopen
 import csv
 import db_connection
-from query_helpers import drop_index, add_index
+from query_helpers import drop_indices, add_indices
 SOURCE_URL = "https://nycopendata.socrata.com/api/views/xx67-kt59/rows.csv?accessType=DOWNLOAD"
 
 
@@ -44,18 +44,15 @@ def insert_statement():
 
 def populate_db(url):
     """Reads csv file from a url and inserts each line into the db"""
-    drop_index()
-    count = 0
+    drop_indices()
     try:
         with db_connection.connect() as connection:
             with connection.cursor() as cur:
                 csv_reader = csv.DictReader(urlopen(url))
                 for row in csv_reader:
-                    print(count)
                     restaurant = transform_row(row)
                     cur.execute(insert_statement(), restaurant)
-                    count += 1
     finally:
-        add_index()
+        add_indices()
 
 populate_db(SOURCE_URL)

@@ -1,15 +1,14 @@
 {
-  "name": "frontend",
+  "name": "Great-thai",
   "version": "1.0.0",
-  "description": "",
+  "description": "ETL for NYC restaurant data",
   "main": "entry.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "./node_modules/.bin/webpack",
     "webpack": "node_modules/.bin/webpack -w"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Fred Sladkey",
   "license": "ISC",
   "dependencies": {
     "babel-core": "^6.23.1",

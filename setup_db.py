@@ -1,5 +1,5 @@
 from db_connection import execute
-from query_helpers import add_index
+from query_helpers import add_indices
 
 
 def setup_db():
@@ -27,6 +27,6 @@ def setup_db():
             inspection_type varchar
         );
     """)
-    add_index()
+    add_indices()
 
 setup_db()

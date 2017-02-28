@@ -14,6 +14,7 @@ def cuisines():
     data = all_cuisines()
     return jsonify(data)
 
+
 @app.route('/api/cuisines/stats/')
 def cuisine_stats():
     cuisine = request.args.get('cuisine')
@@ -22,6 +23,7 @@ def cuisine_stats():
       "grade_distribution": grade_distribution(cuisine)
     }
     return jsonify(data)
+
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
