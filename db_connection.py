@@ -11,6 +11,7 @@ def to_date(string_formatted_date):
 
 col_types = {
     "camis": int,
+    "score": int,
     "dba": str,
     "boro": str,
     "building": str,

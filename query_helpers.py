@@ -8,6 +8,7 @@ def add_indices():
     CREATE INDEX restaurant_idx ON inspections (restaurant_camis);
     CREATE INDEX grade_idx ON inspections (grade);
     CREATE INDEX score_idx ON inspections (score);
+    CREATE INDEX date_idx ON inspections (record_date);
     """)
 
 
@@ -18,6 +19,7 @@ def drop_indices():
     DROP INDEX restaurant_idx;
     DROP INDEX grade_idx;
     DROP INDEX score_idx;
+    DROP INDEX date_idx;
     """)
 
 
