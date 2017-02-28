@@ -3,24 +3,26 @@ import { formatAddress, capitalize } from '../misc_utils'
 
 const whitelist = [
   "cuisine_description",
-  "grade",
-  "score",
+  "max_grade",
+  "total_score",
   "phone"
 ];
 
-const col_names = {
+const colNames = {
+  camis: "Camis",
   cuisine_description: "Cuisine",
-  grade: "Grade",
-  score: "Score",
-  phone: "Phone Number"
+  max_grade: "Grade",
+  total_score: "Score",
+  phone: "Phone Number",
+  inspection_date: "Inspection Date"
 };
 
 export default function RestaurantDetail({ restaurant, rank }) {
   if (!restaurant) return null;
-  const cols = whitelist.map(col => {
+  const cols = whitelist.map((col, idx) => {
     return (
-      <li key={ col_names[col] }>
-        <strong>{ capitalize(col) }: </strong>
+      <li key={ idx }>
+        <strong>{ capitalize(colNames[col]) }: </strong>
         { restaurant[col] }
       </li>
     )

@@ -49,7 +49,7 @@ main {
 }
 
 .cuisine-list ul {
-  height: calc(100% - )
+  height: calc(100% - 50px);
 }
 
 .cuisine-detail {
