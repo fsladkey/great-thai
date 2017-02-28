@@ -56,7 +56,6 @@ def populate_db(url):
     """Reads csv file from a url and inserts each line into the db"""
     restaurant_ids = set([])
     drop_indices()
-    count = 0
     try:
         with db_connection.connect() as connection:
             with connection.cursor() as cur:
@@ -70,8 +69,6 @@ def populate_db(url):
                         cur.execute(insert_restaurant(), transformed)
                         cur.execute(insert_inspection(), transformed)
                         restaurant_ids.add(restaurant_id)
-                    count += 1
-                    print(count)
     finally:
         add_indices()
 
