@@ -44,7 +44,7 @@ export default class GradeDistibutionChart extends Component {
 
   componentDidMount() {
     new Chart(this.chart, {
-        type: 'bar',
+        type: 'horizontalBar',
         data: this.getChartData()
     });
   }
@@ -55,6 +55,10 @@ export default class GradeDistibutionChart extends Component {
   }
 
   render() {
-    return <canvas ref={ this.getRef }/>
+    return (
+      <div className="container flex-item">
+        <canvas ref={ this.getRef }/>
+      </div>
+    )
   }
 }

@@ -29,8 +29,7 @@ export default class App extends Component {
     if (fetching) return <Loader />;
 
     return (
-      <main>
-        <h1>{ selected }</h1>
+      <main className="full flex-row">
         <CuisineList
           cuisines={ cuisines }
           setSelected={ this.setSelected }

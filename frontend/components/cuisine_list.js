@@ -1,8 +1,5 @@
 import React from 'react';
-
-function preview(string, maxLen) {
-  return string.length > maxLen ? string.slice(0, maxLen) + "..." : string;
-}
+import { preview } from '../misc_utils'
 
 export default function CuisineList({ cuisines, setSelected, selected }) {
   const cuisineItems = cuisines.map(cuisine => {
@@ -15,8 +12,11 @@ export default function CuisineList({ cuisines, setSelected, selected }) {
     );
   });
   return (
-    <ul className="cuisine-list">
-      { cuisineItems }
-    </ul>
+    <section className="cuisine-list full">
+      <h3>Cuisines</h3>
+      <ul>
+        { cuisineItems }
+      </ul>
+    </section>
   );
 }
