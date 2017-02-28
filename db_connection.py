@@ -23,13 +23,13 @@ col_types = {
     "violation_code": str,
     "violation_description": str,
     "critical_flag": str,
-    "score": str,
+    "int": str,
     "grade": str,
     "record_date": to_date,
     "grade_date": to_date,
     "inspection_type": str
 }
-col_names = [
+restaurtant_col_names = [
     "camis",
     "dba",
     "boro",
@@ -37,17 +37,20 @@ col_names = [
     "street",
     "zipcode",
     "phone",
-    "cuisine_description",
-    "inspection_date",
+    "cuisine_description"
+]
+inspection_col_names = [
+    "restaurant_camis",
     "action",
-    "violation_code",
-    "violation_description",
     "critical_flag",
-    "score",
     "grade",
-    "record_date",
     "grade_date",
+    "inspection_date",
     "inspection_type",
+    "record_date",
+    "score",
+    "violation_code",
+    "violation_description"
 ]
 cursors = {
     list: psycopg2.extras.DictCursor,

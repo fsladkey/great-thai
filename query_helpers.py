@@ -5,8 +5,9 @@ def add_indices():
     "Adds indices to table on commonly searched columns"
     return execute("""
     CREATE INDEX cuisine_idx ON restaurants (cuisine_description);
-    CREATE INDEX grade_idx ON restaurants (grade);
-    CREATE INDEX score_idx ON restaurants (score);
+    CREATE INDEX restaurant_idx ON inspections (restaurant_camis);
+    CREATE INDEX grade_idx ON inspections (grade);
+    CREATE INDEX score_idx ON inspections (score);
     """)
 
 
@@ -14,6 +15,7 @@ def drop_indices():
     "Drops all indices on the restaurants table"
     return execute("""
     DROP INDEX cuisine_idx;
+    DROP INDEX restaurant_idx;
     DROP INDEX grade_idx;
     DROP INDEX score_idx;
     """)
@@ -38,15 +40,26 @@ def top_ten_by_grade(cuisine):
     """
     return fetch_all("""
     SELECT
-      *
+      restaurants.*,
+      MIN(inspections.grade) AS max_grade,
+      SUM(CAST(inspections.score AS integer)) AS total_score
     FROM
       restaurants
+    JOIN
+      inspections ON restaurants.camis = inspections.restaurant_camis
+    LEFT OUTER JOIN
+      inspections as latest ON (latest.restaurant_camis = inspections.restaurant_camis AND
+      inspections.record_date < latest.record_date)
     WHERE
-      cuisine_description = %(cuisine)s AND grade IN ('A', 'B')
+      cuisine_description = %(cuisine)s AND
+      inspections.grade IN ('A', 'B') AND
+      latest.record_date IS NULL
+    GROUP BY
+      restaurants.id
     ORDER BY
-      grade, score, critical_flag DESC
+      max_grade, total_score
     LIMIT
-      10
+     10
     """, vals={"cuisine": cuisine})
 
 
@@ -54,11 +67,13 @@ def grade_distribution(cuisine):
     """Returns the frequenacy of each letter grade for a cuisine"""
     return fetch_all("""
     SELECT
-      grade, COUNT(id) as num_restaurants
+      grade, COUNT(DISTINCT inspections.id) AS num_restaurants
     FROM
       restaurants
+    LEFT OUTER JOIN
+      inspections ON (inspections.restaurant_camis = restaurants.camis)
     WHERE
-      cuisine_description = %(cuisine)s AND grade IS NOT null
+      restaurants.cuisine_description = %(cuisine)s AND grade IS NOT null
     GROUP BY
       grade
     """, vals={"cuisine": cuisine})
