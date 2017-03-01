@@ -81,7 +81,7 @@ def execute(statement, vals={}, return_type=dict):
             cur.execute(statement, vals)
 
 
-def fetch_all(statement, vals={}, return_type=dict):
+def fetch(statement, vals={}, return_type=dict):
     cursor = cursors[return_type]
     with connect() as connection:
         with connection.cursor(cursor_factory=cursor) as cur:

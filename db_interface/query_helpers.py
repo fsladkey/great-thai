@@ -1,4 +1,4 @@
-from db_connection import fetch_all, execute
+from db_connection import fetch, execute
 
 
 def add_indices():
@@ -27,7 +27,7 @@ def drop_indices():
 
 def all_cuisines():
     """Returns all values for cuisine_description as a list"""
-    result = fetch_all("""
+    result = fetch("""
     SELECT DISTINCT
       cuisine_description
     FROM
@@ -42,7 +42,7 @@ def top_ten_by_grade(cuisine):
     Restaurants are ordered by grade and score and preference is given to
     those with a non-critical violation.
     """
-    return fetch_all("""
+    return fetch("""
     SELECT
       restaurants.*,
       MIN(inspections.grade) AS max_grade,
@@ -69,7 +69,7 @@ def top_ten_by_grade(cuisine):
 
 def grade_distribution(cuisine):
     """Returns the frequenacy of each letter grade for a cuisine"""
-    return fetch_all("""
+    return fetch("""
     SELECT
       grade, COUNT(DISTINCT inspections.id) AS num_restaurants
     FROM
