@@ -1,5 +1,7 @@
 # Great Thai
 
+[Live site on heroku](https://great-thai.herokuapp.com/)
+
 To start the app locally, run the start script `./start.sh`.
 It will take a few minutes to populate the database.
 
@@ -74,3 +76,5 @@ ORDER BY
 LIMIT
  10
  ```
+
+I had a lot of fun with this and I'm looking forward to feedback. Thank you!
