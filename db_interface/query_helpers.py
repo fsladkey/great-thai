@@ -46,7 +46,7 @@ def top_ten_by_grade(cuisine):
     SELECT
       restaurants.*,
       MIN(inspections.grade) AS max_grade,
-      SUM(CAST(inspections.score AS integer)) AS total_score
+      SUM(inspections.score) AS total_score
     FROM
       restaurants
     JOIN
