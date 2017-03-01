@@ -4,6 +4,7 @@ from db_connection import fetch_all, execute
 def add_indices():
     "Adds indices to table on commonly searched columns"
     return execute("""
+    CREATE INDEX camis_idx ON restaurants (camis);
     CREATE INDEX cuisine_idx ON restaurants (cuisine_description);
     CREATE INDEX restaurant_idx ON inspections (restaurant_camis);
     CREATE INDEX grade_idx ON inspections (grade);
@@ -15,6 +16,7 @@ def add_indices():
 def drop_indices():
     "Drops all indices on the restaurants table"
     return execute("""
+    DROP INDEX camis_idx;
     DROP INDEX cuisine_idx;
     DROP INDEX restaurant_idx;
     DROP INDEX grade_idx;
@@ -54,7 +56,7 @@ def top_ten_by_grade(cuisine):
       inspections.record_date < latest.record_date)
     WHERE
       cuisine_description = %(cuisine)s AND
-      inspections.grade IN ('A', 'B') AND
+      inspections.grade <= 'B' AND
       latest.record_date IS NULL
     GROUP BY
       restaurants.id

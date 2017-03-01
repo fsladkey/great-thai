@@ -3,7 +3,7 @@ import { formatAddress, capitalize } from '../misc_utils'
 
 const whitelist = [
   "cuisine_description",
-  "max_grade",
+  "worst_grade",
   "total_score",
   "phone"
 ];
@@ -11,7 +11,7 @@ const whitelist = [
 const colNames = {
   camis: "Camis",
   cuisine_description: "Cuisine",
-  max_grade: "Grade",
+  worst_grade: "Grade",
   total_score: "Score",
   phone: "Phone Number",
   inspection_date: "Inspection Date"
