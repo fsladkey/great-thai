@@ -56,7 +56,7 @@ query for any cuisine.
 ```sql
 SELECT
   restaurants.*,
-  max(inspections.grade) AS worst_grade,
+  MAX(inspections.grade) AS worst_grade,
   SUM(CAST(inspections.score AS integer)) AS total_score
 FROM
   restaurants
@@ -72,7 +72,7 @@ WHERE
 GROUP BY
   restaurants.id
 ORDER BY
-  max_grade, total_score
+  worst_grade, total_score
 LIMIT
  10
  ```

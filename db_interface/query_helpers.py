@@ -45,7 +45,7 @@ def top_ten_by_grade(cuisine):
     return fetch("""
     SELECT
       restaurants.*,
-      MIN(inspections.grade) AS max_grade,
+      MAX(inspections.grade) AS worst_grade,
       SUM(inspections.score) AS total_score
     FROM
       restaurants
@@ -61,7 +61,7 @@ def top_ten_by_grade(cuisine):
     GROUP BY
       restaurants.id
     ORDER BY
-      max_grade, total_score
+      worst_grade, total_score
     LIMIT
      10
     """, vals={"cuisine": cuisine})
