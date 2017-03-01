@@ -56,11 +56,14 @@ def populate_db(url):
     """Reads csv file from a url and inserts each line into the db"""
     restaurant_ids = set([])
     drop_indices()
+    count = 0
     try:
         with db_connection.connect() as connection:
             with connection.cursor() as cur:
                 csv_reader = csv.DictReader(urlopen(url))
                 for row in csv_reader:
+                    count += 1
+                    print(count)
                     restaurant_id = row["CAMIS"]
                     transformed = transform_row(row)
                     if restaurant_id in restaurant_ids:
